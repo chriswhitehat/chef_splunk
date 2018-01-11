@@ -17,6 +17,10 @@ dpkg_package 'splunkforwarder' do
   source '/tmp/splunkforwarder.deb'
 end
 
+
+include_recipe 'chef_splunk::apps'
+
+
 if node[:chef_splunk][:accept_license]
   init_start_command = "#{node[:chef_splunk][:home]}/bin/splunk start --accept-license"
 else
