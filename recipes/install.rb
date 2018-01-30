@@ -1,8 +1,9 @@
 #
 # Cookbook:: chef_splunk
-# Recipe:: default
+# Recipe:: install
 #
 # Copyright:: 2018, The Authors, All Rights Reserved.
+
 
 node.default[:chef_splunk][:home] = node[:chef_splunk][node[:chef_splunk][:type]][:home]
 node.default[:chef_splunk][:filename] = node[:chef_splunk][node[:chef_splunk][:type]][:filename]
@@ -16,7 +17,7 @@ remote_file "/tmp/#{node[:chef_splunk][:filename]}" do
   action :create_if_missing
 end
 
-dpkg_package 'splunk_install' do
+dpkg_package 'splunk' do
   source "/tmp/#{node[:chef_splunk][:filename]}"
   notifies :create, 'file[version_installed]'
 end
@@ -34,7 +35,6 @@ end
 include_recipe 'chef_splunk::apps'
 
 
-# Possibly need to accept license then normal start to avoid permissions issues.
 if node[:chef_splunk][:accept_license]
   init_start_command = "#{node[:chef_splunk][:home]}/bin/splunk start --accept-license"
 else
@@ -52,3 +52,5 @@ execute 'start_splunk_on_boot' do
   command "#{node[:chef_splunk][:home]}/bin/splunk enable boot-start"
   not_if do ::File.exists?('/etc/init.d/splunk') end
 end
+
+
