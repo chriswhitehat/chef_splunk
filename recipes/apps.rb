@@ -23,6 +23,7 @@ node[:chef_splunk][:apps].each_key do |splunk_app|
       notifies :run, 'execute[restart_splunk]', :delayed
     end
 
+
     node[:chef_splunk][:apps][splunk_app][:conf].each_key do |dir|
 
       directory "#{node[:chef_splunk][:home]}/#{splunk_conf_base}/#{splunk_app}/#{dir}" do
@@ -49,6 +50,28 @@ node[:chef_splunk][:apps].each_key do |splunk_app|
             :stanzas => node[:chef_splunk][:apps][splunk_app][:conf][dir][conf]
           })
           notifies :run, 'execute[restart_splunk]', :delayed
+        end
+      end
+    end
+
+    # Loop through bin list of <filename> from app attributes definition
+    # Expecting template in implementation cookbook templates/<app_name>/<filename>.erb
+    if node[:chef_splunk][:apps][splunk_app][:bin]
+      directory "#{node[:chef_splunk][:home]}/#{splunk_conf_base}/#{splunk_app}/bin" do
+        owner 'splunk'
+        group 'splunk'
+        mode '0755'
+        action :create
+        notifies :run, 'execute[restart_splunk]', :delayed
+      end
+    
+      node[:chef_splunk][:apps][splunk_app][:bin].each do | bin_file |
+        template "#{node[:chef_splunk][:home]}/#{splunk_conf_base}/#{splunk_app}/bin/#{bin_file}" do
+          source "#{splunk_app}/#{bin_file}.erb"
+          cookbook "#{node[:chef_splunk][:implementation_cookbook]}"
+          owner 'splunk'
+          group 'splunk'
+          mode '0644'
         end
       end
     end

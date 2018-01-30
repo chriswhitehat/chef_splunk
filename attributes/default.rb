@@ -31,3 +31,5 @@ default[:chef_splunk][:enterprise][:filename] = filename_enterprise
 default[:chef_splunk][:enterprise][:url] = "http://download.splunk.com/products/splunk/releases/#{version}/linux/#{filename_enterprise}"
 
 default[:chef_splunk][:accept_license] = true
+
+default[:chef_splunk][:implementation_cookbook] = 'org_splunk'

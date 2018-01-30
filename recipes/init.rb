@@ -1,24 +1,8 @@
 #
-# Cookbook Name:: chef_splunk
-# Recipe:: client
+# Cookbook:: chef_splunk
+# Recipe:: init
 #
-# Copyright (c) 2017 Chris White, MIT License
-#
-
-remote_file '/tmp/splunkforwarder.deb' do
-  owner 'root'
-  group 'root'
-  mode '0644'
-  source node[:chef_splunk][:forwarder][:url]
-  action :create_if_missing
-end
-
-dpkg_package 'splunkforwarder' do
-  source '/tmp/splunkforwarder.deb'
-end
-
-
-include_recipe 'chef_splunk::apps'
+# Copyright:: 2018, The Authors, All Rights Reserved.
 
 
 if node[:chef_splunk][:accept_license]
@@ -38,5 +22,3 @@ execute 'start_splunk_on_boot' do
   command "#{node[:chef_splunk][:home]}/bin/splunk enable boot-start"
   not_if do ::File.exists?('/etc/init.d/splunk') end
 end
-
-
