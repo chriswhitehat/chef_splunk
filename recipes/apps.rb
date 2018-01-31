@@ -24,32 +24,34 @@ node[:chef_splunk][:apps].each_key do |splunk_app|
     end
 
 
-    node[:chef_splunk][:apps][splunk_app][:conf].each_key do |dir|
+    if node[:chef_splunk][:apps][splunk_app][:conf]
+      node[:chef_splunk][:apps][splunk_app][:conf].each_key do |dir|
 
-      directory "#{node[:chef_splunk][:home]}/#{splunk_conf_base}/#{splunk_app}/#{dir}" do
-        owner 'splunk'
-        group 'splunk'
-        mode '0755'
-        action :create
-        notifies :run, 'execute[restart_splunk]', :delayed
-      end
-      
-
-      node[:chef_splunk][:apps][splunk_app][:conf][dir].each_key do |conf|
-      
-        template "#{node[:chef_splunk][:home]}/#{splunk_conf_base}/#{splunk_app}/#{dir}/#{conf}" do
-          source 'confs.erb'
+        directory "#{node[:chef_splunk][:home]}/#{splunk_conf_base}/#{splunk_app}/#{dir}" do
           owner 'splunk'
           group 'splunk'
-          mode '0644'
-          variables({
-            :splunk_app => splunk_app,
-            :splunk_conf_base => splunk_conf_base,
-            :dir => dir,
-            :conf => conf,
-            :stanzas => node[:chef_splunk][:apps][splunk_app][:conf][dir][conf]
-          })
+          mode '0755'
+          action :create
           notifies :run, 'execute[restart_splunk]', :delayed
+        end
+        
+
+        node[:chef_splunk][:apps][splunk_app][:conf][dir].each_key do |conf|
+        
+          template "#{node[:chef_splunk][:home]}/#{splunk_conf_base}/#{splunk_app}/#{dir}/#{conf}" do
+            source 'confs.erb'
+            owner 'splunk'
+            group 'splunk'
+            mode '0644'
+            variables({
+              :splunk_app => splunk_app,
+              :splunk_conf_base => splunk_conf_base,
+              :dir => dir,
+              :conf => conf,
+              :stanzas => node[:chef_splunk][:apps][splunk_app][:conf][dir][conf]
+            })
+            notifies :run, 'execute[restart_splunk]', :delayed
+          end
         end
       end
     end
