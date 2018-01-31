@@ -7,13 +7,13 @@
 
 node[:chef_splunk][:apps].each_key do |splunk_app|
 
-  if node[:chef_splunk][:apps][splunk_app][:enabled]
+  if splunk_app == 'system'
+    splunk_conf_base = 'etc'
+  else
+    splunk_conf_base = 'etc/apps'
+  end
 
-    if splunk_app == 'system'
-      splunk_conf_base = 'etc'
-    else
-      splunk_conf_base = 'etc/apps'
-    end
+  if node[:chef_splunk][:apps][splunk_app][:enabled]
 
     directory "#{node[:chef_splunk][:home]}/#{splunk_conf_base}/#{splunk_app}" do
       owner 'splunk'
