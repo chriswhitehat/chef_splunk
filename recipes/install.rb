@@ -15,7 +15,7 @@ remote_file "/tmp/#{node[:chef_splunk][:filename]}" do
   mode '0644'
   source node[:chef_splunk][:url]
   action :create_if_missing
-  not_if do ::File.exists?("#{node[:chef_splunk][:home]}/#{node[:chef_splunk][:version]}-#{node[:chef_splunk][:build]}.installed")
+  not_if do ::File.exists?("#{node[:chef_splunk][:home]}/#{node[:chef_splunk][:version]}-#{node[:chef_splunk][:build]}.installed") end
 end
 
 dpkg_package 'splunk' do
