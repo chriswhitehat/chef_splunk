@@ -78,6 +78,28 @@ node[:chef_splunk][:apps].each_key do |splunk_app|
       end
     end
 
+    # Loop through lookups list of <filename> from app attributes definition
+    # Expecting template in implementation cookbook templates/<app_name>/<filename>.erb
+    if node[:chef_splunk][:apps][splunk_app][:lookups]
+      directory "#{node[:chef_splunk][:home]}/#{splunk_conf_base}/#{splunk_app}/lookups" do
+        owner 'splunk'
+        group 'splunk'
+        mode '0755'
+        action :create
+        notifies :run, 'execute[restart_splunk]', :delayed
+      end
+    
+      node[:chef_splunk][:apps][splunk_app][:lookups].each do | lookups_file |
+        template "#{node[:chef_splunk][:home]}/#{splunk_conf_base}/#{splunk_app}/lookups/#{lookups_file}" do
+          source "#{splunk_app}/#{lookups_file}.erb"
+          cookbook "#{node[:chef_splunk][:implementation_cookbook]}"
+          owner 'splunk'
+          group 'splunk'
+          mode '0644'
+        end
+      end
+    end
+
   else
 
     if splunk_app != 'system'
