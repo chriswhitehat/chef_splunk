@@ -14,6 +14,7 @@ execute 'remove_old_packages' do
   command 'rm /root/splunk*.deb'
   action :run
   not_if do ::File.exists?("#{node[:chef_splunk][:home]}/#{node[:chef_splunk][:version]}-#{node[:chef_splunk][:build]}.installed") end
+  only_if do ::File.exists?("#{node[:chef_splunk][:home]}/#{node[:chef_splunk][:version]}-#{node[:chef_splunk][:build]}.installed") end
 end
 
 remote_file "#{node[:chef_splunk][:package_path]}/#{node[:chef_splunk][:filename]}" do
@@ -28,6 +29,7 @@ end
 dpkg_package 'splunk' do
   source "#{node[:chef_splunk][:package_path]}/#{node[:chef_splunk][:filename]}"
   notifies :create, 'file[version_installed]'
+  not_if do ::File.exists?("#{node[:chef_splunk][:home]}/#{node[:chef_splunk][:version]}-#{node[:chef_splunk][:build]}.installed") end
 end
 
 file 'version_installed' do
