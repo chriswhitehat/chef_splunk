@@ -9,7 +9,7 @@ node.default[:chef_splunk][:home] = node[:chef_splunk][node[:chef_splunk][:type]
 node.default[:chef_splunk][:filename] = node[:chef_splunk][node[:chef_splunk][:type]][:filename]
 node.default[:chef_splunk][:url] = node[:chef_splunk][node[:chef_splunk][:type]][:url]
 
-remote_file "/tmp/#{node[:chef_splunk][:filename]}" do
+remote_file "#{node[:chef_splunk][:package_path]}/#{node[:chef_splunk][:filename]}" do
   owner 'root'
   group 'root'
   mode '0644'
@@ -19,7 +19,7 @@ remote_file "/tmp/#{node[:chef_splunk][:filename]}" do
 end
 
 dpkg_package 'splunk' do
-  source "/tmp/#{node[:chef_splunk][:filename]}"
+  source "#{node[:chef_splunk][:package_path]}/#{node[:chef_splunk][:filename]}"
   notifies :create, 'file[version_installed]'
 end
 
