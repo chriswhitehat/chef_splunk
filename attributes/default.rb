@@ -11,6 +11,9 @@
 # - Find wget link
 # - Extract version of build
 # - /releases/<version>/linux/splunkforwarder-<version>-<build>-linux-2.6-amd64.deb
+
+# Type can be 
+type = 'forwarder'
 version = '6.6.2'
 build = '4b804538c686'
 
