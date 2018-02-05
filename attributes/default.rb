@@ -2,7 +2,7 @@
 # Cookbook Name:: chef_splunk
 # Attribute:: default
 #
-# Copyright (c) 2017 Chris White, MIT License
+# Copyright (c) 2018 Chris White, MIT License
 #
 
 
