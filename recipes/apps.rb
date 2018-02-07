@@ -73,7 +73,7 @@ node[:chef_splunk][:apps].each_key do |splunk_app|
           cookbook "#{node[:chef_splunk][:implementation_cookbook]}"
           owner 'splunk'
           group 'splunk'
-          mode '0644'
+          mode '0744'
         end
       end
     end
@@ -96,6 +96,7 @@ node[:chef_splunk][:apps].each_key do |splunk_app|
           owner 'splunk'
           group 'splunk'
           mode '0644'
+          not_if do ::File.exists?("#{node[:chef_splunk][:home]}/#{splunk_conf_base}/#{splunk_app}/lookups/#{lookups_file}") end
         end
       end
     end
