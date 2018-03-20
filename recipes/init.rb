@@ -22,3 +22,4 @@ execute 'start_splunk_on_boot' do
   command "#{node[:chef_splunk][:home]}/bin/splunk enable boot-start"
   not_if do ::File.exists?('/etc/init.d/splunk') end
 end
+
