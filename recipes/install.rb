@@ -28,8 +28,7 @@ end
 
 dpkg_package 'splunk' do
   source "#{node[:chef_splunk][:package_path]}/#{node[:chef_splunk][:filename]}"
-  version "node[:chef_splunk][:version]"
-  options "-y"
+  version "#{node[:chef_splunk][:version]}"
   notifies :create, 'file[version_installed]'
   not_if do ::File.exists?("#{node[:chef_splunk][:home]}/#{node[:chef_splunk][:version]}-#{node[:chef_splunk][:build]}.installed") end
 end
