@@ -6,7 +6,7 @@
 
 
 if node[:chef_splunk][:accept_license]
-  init_start_command = "#{node[:chef_splunk][:home]}/bin/splunk start --accept-license"
+  init_start_command = "#{node[:chef_splunk][:home]}/bin/splunk start --accept-license --answer-yes"
 else
   init_start_command = "#{node[:chef_splunk][:home]}/bin/splunk start"
 end
