@@ -5,7 +5,11 @@
 #
 
 <% @stanzas.each do |stanza, kvpairs| %>
+<% if stanza == '[]' %>
+[]
+<% else %>
 [<%= "#{stanza}" %>]
+<% end %>
 	<% kvpairs.each do |key, value| %>
 <%= "#{key} = #{value}" %>
 	<% end %>
