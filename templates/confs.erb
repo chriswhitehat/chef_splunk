@@ -9,6 +9,9 @@
 []
 <% else %>
 [<%= "#{stanza}" %>]
+<% if @conf == 'inputs.conf' and node[:chef_splunk][:host] %>
+host = <%= node[:chef_splunk][:host] %>
+<% end %>
 <% end %>
 	<% kvpairs.each do |key, value| %>
 <%= "#{key} = #{value}" %>
