@@ -15,7 +15,7 @@
 ### END INIT INFO
 #
 RETVAL=0
-USER = <%= node[:chef_splunk][:user] %>
+USER = <%= node[:chef_splunk][:splunk_user] %>
 
 splunk_start() {
   echo Starting Splunk...

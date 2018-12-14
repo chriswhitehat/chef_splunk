@@ -28,4 +28,11 @@ template '/etc/init.d/splunk' do
   owner 'root'
   group 'root'
   mode '0644'
+  notifies :run, 'execute[chown_splunk_home]'
 end
+
+execute 'chown_splunk_home' do
+  command "sudo service splunk stop; chown -R #{node[:chef_splunk][:splunk_user]}:#{node[:chef_splunk][:splunk_user]} #{node[:chef_splunk][:home]}/; sudo service splunk start"
+  action :nothing
+end
+
