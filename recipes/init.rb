@@ -23,3 +23,9 @@ execute 'start_splunk_on_boot' do
   not_if do ::File.exists?('/etc/init.d/splunk') end
 end
 
+template '/etc/init.d/splunk' do
+  source 'init.d/splunk.erb'
+  owner 'root'
+  group 'root'
+  mode '0644'
+end
