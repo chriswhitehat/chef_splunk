@@ -20,6 +20,8 @@ build = '4b804538c686'
 filename_forwarder = "splunkforwarder-#{version}-#{build}-linux-2.6-amd64.deb"
 filename_enterprise = "splunk-#{version}-#{build}-linux-2.6-amd64.deb"
 
+default[:chef_splunk][:splunk_user] = 'splunk'
+
 default[:chef_splunk][:type] = 'forwarder'
 default[:chef_splunk][:version] = version
 default[:chef_splunk][:build] = build

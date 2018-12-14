@@ -19,7 +19,7 @@ execute 'initial_splunk_start' do
 end
 
 execute 'start_splunk_on_boot' do
-  command "#{node[:chef_splunk][:home]}/bin/splunk enable boot-start"
+  command "#{node[:chef_splunk][:home]}/bin/splunk enable boot-start -user #{node[:chef_splunk][:splunk_user]}"
   not_if do ::File.exists?('/etc/init.d/splunk') end
 end
 
