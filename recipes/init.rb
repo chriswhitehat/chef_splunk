@@ -23,16 +23,16 @@ execute 'start_splunk_on_boot' do
   not_if do ::File.exists?('/etc/init.d/splunk') end
 end
 
-template '/etc/init.d/splunk' do
-  source 'init.d/splunk.erb'
-  owner 'root'
-  group 'root'
-  mode '0644'
-  notifies :run, 'execute[init_and_chown_splunk_home]'
-end
+# template '/etc/init.d/splunk' do
+#   source 'init.d/splunk.erb'
+#   owner 'root'
+#   group 'root'
+#   mode '0644'
+#   notifies :run, 'execute[init_and_chown_splunk_home]'
+# end
 
-execute 'init_and_chown_splunk_home' do
-  command "systemctl daemon-reload; sudo service splunk stop; chown -R #{node[:chef_splunk][:splunk_user]}:#{node[:chef_splunk][:splunk_user]} #{node[:chef_splunk][:home]}/; sudo service splunk start"
-  action :nothing
-end
+# execute 'init_and_chown_splunk_home' do
+#   command "systemctl daemon-reload; sudo service splunk stop; chown -R #{node[:chef_splunk][:splunk_user]}:#{node[:chef_splunk][:splunk_user]} #{node[:chef_splunk][:home]}/; sudo service splunk start"
+#   action :nothing
+# end
 
