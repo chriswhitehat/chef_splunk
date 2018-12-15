@@ -33,7 +33,7 @@ end
 execute 'chown_splunk' do
   command "chown -R #{node[:chef_splunk][:splunk_user]}:#{node[:chef_splunk][:splunk_user]} #{node[:chef_splunk][:home]}"
   action :nothing
-  notifies :run, 'excute[boot-start_fix]'
+  notifies :run, 'execute[boot-start_fix]'
 end
 
 execute 'boot-start_fix' do
