@@ -23,6 +23,14 @@ execute 'start_splunk_on_boot' do
   not_if do ::File.exists?('/etc/init.d/splunk') end
 end
 
+execute 'boot-start_user_fix' do
+  command "service splunk stop; chown -R #{node[:chef_splunk][:splunk_user]}:#{node[:chef_splunk][:splunk_user]} #{node[:chef_splunk][:home]}; #{node[:chef_splunk][:home]}/bin/splunk enable boot-start -user #{node[:chef_splunk][:splunk_user]}; service splunk start"
+  not_if do ::File.exists?("#{node[:chef_splunk][:home]}/boot-start_#{node[:chef_splunk][:splunk_user]}") end
+  creates "#{node[:chef_splunk][:home]}/boot-start_#{node[:chef_splunk][:splunk_user]}"
+  action :run
+end
+
+
 # template '/etc/init.d/splunk' do
 #   source 'init.d/splunk.erb'
 #   owner 'root'
