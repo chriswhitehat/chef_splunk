@@ -16,11 +16,6 @@ end
 
 version_installed_filename = "#{node[:chef_splunk][:home]}/#{node[:chef_splunk][:version]}-#{node[:chef_splunk][:build]}.installed"
 
-execute 'remove_old_packages' do
-  command 'rm /root/splunk*.deb'
-  action :run
-  only_if do ::File.exists?(version_installed_filename) end
-end
 
 remote_file "#{node[:chef_splunk][:package_path]}/#{package_filename}" do
   owner 'root'
@@ -45,5 +40,11 @@ file 'version_installed' do
   owner 'splunk'
   group 'splunk'
   mode '0644'
+  notifies :run, 'execute[remove_old_packages]'
 end
 
+execute 'remove_old_packages' do
+  command 'rm /root/splunk*.deb'
+  action :nothing
+  only_if do ::File.exists?(version_installed_filename) end
+end
