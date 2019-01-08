@@ -119,5 +119,6 @@ execute 'restart_splunk' do
   user 'splunk'
   group 'splunk'
   action :nothing
+  not_if do ::File.exists?("#{node[:chef_splunk][:home]}/ftr") end
 end
 
