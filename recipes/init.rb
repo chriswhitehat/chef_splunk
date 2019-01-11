@@ -20,7 +20,7 @@ execute 'initial_splunk_start' do
 end
 
 execute 'start_splunk_on_boot' do
-  command "#{node[:chef_splunk][:home]}/bin/splunk enable boot-start -user #{node[:chef_splunk][:splunk_user]}"
+  command "#{node[:chef_splunk][:home]}/bin/splunk enable boot-start -user #{node[:chef_splunk][:splunk_user]}; systemctl daemon-reload"
   action :nothing
 end
 
