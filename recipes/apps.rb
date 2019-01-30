@@ -5,6 +5,12 @@
 # Copyright (c) 2017 Chris White, MIT License
 #
 
+if ::File.exist?('/etc/systemd/system/SplunkForwarder')
+  splunk_service = 'SplunkForwarder'
+else
+  splunk_service 'splunk'
+end
+
 node[:chef_splunk][:apps].each_key do |splunk_app|
 
   if splunk_app == 'system'
@@ -20,7 +26,7 @@ node[:chef_splunk][:apps].each_key do |splunk_app|
       group 'splunk'
       mode '0755'
       action :create
-      notifies :run, 'execute[restart_splunk]', :delayed
+      notifies :restart, "service[#{splunk_service}]", :delayed
     end
 
 
@@ -32,7 +38,7 @@ node[:chef_splunk][:apps].each_key do |splunk_app|
           group 'splunk'
           mode '0755'
           action :create
-          notifies :run, 'execute[restart_splunk]', :delayed
+          notifies :restart, "service[#{splunk_service}]", :delayed
         end
         
 
@@ -50,7 +56,7 @@ node[:chef_splunk][:apps].each_key do |splunk_app|
               :conf => conf,
               :stanzas => node[:chef_splunk][:apps][splunk_app][:conf][dir][conf]
             })
-            notifies :run, 'execute[restart_splunk]', :delayed
+            notifies :restart, "service[#{splunk_service}]", :delayed
           end
         end
       end
@@ -64,7 +70,7 @@ node[:chef_splunk][:apps].each_key do |splunk_app|
         group 'splunk'
         mode '0755'
         action :create
-        notifies :run, 'execute[restart_splunk]', :delayed
+        notifies :restart, "service[#{splunk_service}]", :delayed
       end
     
       node[:chef_splunk][:apps][splunk_app][:bin].each do | bin_file |
@@ -86,7 +92,7 @@ node[:chef_splunk][:apps].each_key do |splunk_app|
         group 'splunk'
         mode '0755'
         action :create
-        notifies :run, 'execute[restart_splunk]', :delayed
+        notifies :restart, "service[#{splunk_service}]", :delayed
       end
     
       node[:chef_splunk][:apps][splunk_app][:lookups].each do | lookups_file |
@@ -107,17 +113,14 @@ node[:chef_splunk][:apps].each_key do |splunk_app|
       directory "#{node[:chef_splunk][:home]}/#{splunk_conf_base}/#{splunk_app}" do
         recursive true
         action :delete
-        notifies :run, 'execute[restart_splunk]', :delayed
+        notifies :restart, "service[#{splunk_service}]", :delayed
       end
     end
     
   end
 end
 
-execute 'restart_splunk' do
-  command "#{node[:chef_splunk][:home]}/bin/splunk restart"
-  user 'splunk'
-  group 'splunk'
+service splunk_service do
   action :nothing
   not_if do ::File.exists?("#{node[:chef_splunk][:home]}/ftr") end
 end
