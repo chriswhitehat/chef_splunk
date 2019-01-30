@@ -5,7 +5,7 @@
 # Copyright (c) 2017 Chris White, MIT License
 #
 
-if ::File.exist?('/etc/systemd/system/SplunkForwarder')
+if ::File.exist?('/etc/systemd/system/SplunkForwarder.service')
   splunk_service = 'SplunkForwarder'
 else
   splunk_service = 'splunk'
