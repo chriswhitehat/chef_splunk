@@ -8,7 +8,7 @@
 if ::File.exist?('/etc/systemd/system/SplunkForwarder')
   splunk_service = 'SplunkForwarder'
 else
-  splunk_service 'splunk'
+  splunk_service = 'splunk'
 end
 
 node[:chef_splunk][:apps].each_key do |splunk_app|
