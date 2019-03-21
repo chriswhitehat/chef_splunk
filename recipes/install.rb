@@ -4,6 +4,12 @@
 #
 # Copyright:: 2018, The Authors, All Rights Reserved.
 
+if ::File.exist?('/etc/systemd/system/SplunkForwarder.service')
+  splunk_service = 'SplunkForwarder'
+else
+  splunk_service = 'splunk'
+end
+
 
 if node[:chef_splunk][:type] == 'forwarder'
   package_filename = "splunkforwarder-#{node[:chef_splunk][:version]}-#{node[:chef_splunk][:build]}-linux-2.6-amd64.deb"
@@ -24,6 +30,12 @@ remote_file "#{node[:chef_splunk][:package_path]}/#{package_filename}" do
   source download_url
   action :create_if_missing
   not_if do ::File.exists?(version_installed_filename) end
+end
+
+service splunk_service do
+  action :stop
+  not_if do ::File.exists?(version_installed_filename) end
+  only_if do ::Dir.exists?(node[:chef_splunk][:home]) end
 end
 
 dpkg_package 'splunk' do
