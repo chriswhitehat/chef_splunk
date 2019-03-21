@@ -6,6 +6,11 @@
 
 if ::File.exist?('/etc/systemd/system/SplunkForwarder.service')
   splunk_service = 'SplunkForwarder'
+
+  file '/etc/init.d/splunk' do
+    action :delete
+  end
+
 else
   splunk_service = 'splunk'
 end
