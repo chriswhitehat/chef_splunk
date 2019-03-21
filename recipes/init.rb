@@ -14,8 +14,6 @@ end
 execute 'initial_splunk_start' do
   command init_start_command
   only_if do ::File.exists?("#{node[:chef_splunk][:home]}/ftr") end
-  user 'splunk'
-  group 'splunk'
   notifies :run, 'execute[start_splunk_on_boot]'
 end
 
