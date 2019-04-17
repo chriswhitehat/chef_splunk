@@ -10,7 +10,7 @@
 []
 	<% else %>
 [<%= "#{stanza}" %>]
-	<% if @conf == 'inputs.conf' and node[:chef_splunk][:host] %>
+	<% if @splunk_app != 'system' and @conf == 'inputs.conf' and node[:chef_splunk][:host] %>
 host = <%= node[:chef_splunk][:host] %>
 	<% end %>
 	<% end %>
@@ -18,5 +18,5 @@ host = <%= node[:chef_splunk][:host] %>
 <%= "#{key} = #{value}" %>
 		<% end %>	
 	<% end %>
-	
+
 <% end %>
