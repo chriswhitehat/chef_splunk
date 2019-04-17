@@ -46,8 +46,14 @@ end
 dpkg_package 'splunk' do
   source "#{node[:chef_splunk][:package_path]}/#{package_filename}"
   version "#{node[:chef_splunk][:version]}"
-  notifies :create, 'file[version_installed]'
+  notifies :run, 'execute[remove_old_installed_files]', :immediately
+  notifies :create, 'file[version_installed]', :immediately
   not_if do ::File.exists?(version_installed_filename) end
+end
+
+execute 'remove_old_installed_files' do
+  command "rm #{node[:chef_splunk][:home]}/*.installed"
+  action :nothing
 end
 
 file 'version_installed' do

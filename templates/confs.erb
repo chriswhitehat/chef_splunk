@@ -5,16 +5,17 @@
 #
 
 <% @stanzas.each do |stanza, kvpairs| %>
-<% if stanza == '[]' %>
+<% if kvpairs %>
+    <% if stanza == '[]' %>
 []
-<% else %>
+	<% else %>
 [<%= "#{stanza}" %>]
-<% if @conf == 'inputs.conf' and node[:chef_splunk][:host] %>
+	<% if @conf == 'inputs.conf' and node[:chef_splunk][:host] %>
 host = <%= node[:chef_splunk][:host] %>
-<% end %>
-<% end %>
-	<% kvpairs.each do |key, value| %>
-<%= "#{key} = #{value}" %>
 	<% end %>
-	
+	<% end %>
+		<% kvpairs.each do |key, value| %>
+	<%= "#{key} = #{value}" %>
+		<% end %>	
+	<% end %>
 <% end %>
