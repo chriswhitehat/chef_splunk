@@ -57,8 +57,8 @@ file 'version_installed' do
   path version_installed_filename
   content "#{Time.now.inspect}"
   action :nothing
-  owner 'splunk'
-  group 'splunk'
+  owner node[:chef_splunk][:splunk_user]
+  group node[:chef_splunk][:splunk_user]
   mode '0644'
   notifies :run, 'execute[remove_old_packages]'
 end

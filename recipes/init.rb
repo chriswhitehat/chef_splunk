@@ -13,6 +13,15 @@ else
   accept_license = ""
 end
 
+if node[:chef_splunk][:user_seed][:hash]
+  template "#{node[:chef_splunk][:home]}/etc/system/local/user-seed.conf" do
+    source 'user-seed.conf.erb'
+    owner node[:chef_splunk][:splunk_user]
+    group node[:chef_splunk][:splunk_user]
+    mode '0644'
+  end
+end
+
 execute 'start_splunk_on_boot' do
   command "#{node[:chef_splunk][:home]}/bin/splunk enable boot-start -user #{node[:chef_splunk][:splunk_user]} #{accept_license}; systemctl daemon-reload"
   only_if do ::File.exists?("#{node[:chef_splunk][:home]}/ftr") end

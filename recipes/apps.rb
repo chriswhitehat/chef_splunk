@@ -18,8 +18,8 @@ node[:chef_splunk][:apps].each_key do |splunk_app|
   if node[:chef_splunk][:apps][splunk_app][:enabled]
 
     directory "#{node[:chef_splunk][:home]}/#{splunk_conf_base}/#{splunk_app}" do
-      owner 'splunk'
-      group 'splunk'
+      owner node[:chef_splunk][:splunk_user]
+      group node[:chef_splunk][:splunk_user]
       mode '0755'
       action :create
       notifies :restart, "service[#{splunk_service}]", :delayed
@@ -30,8 +30,8 @@ node[:chef_splunk][:apps].each_key do |splunk_app|
       node[:chef_splunk][:apps][splunk_app][:conf].each_key do |dir|
 
         directory "#{node[:chef_splunk][:home]}/#{splunk_conf_base}/#{splunk_app}/#{dir}" do
-          owner 'splunk'
-          group 'splunk'
+          owner node[:chef_splunk][:splunk_user]
+          group node[:chef_splunk][:splunk_user]
           mode '0755'
           action :create
           notifies :restart, "service[#{splunk_service}]", :delayed
@@ -42,8 +42,8 @@ node[:chef_splunk][:apps].each_key do |splunk_app|
         
           template "#{node[:chef_splunk][:home]}/#{splunk_conf_base}/#{splunk_app}/#{dir}/#{conf}" do
             source 'confs.erb'
-            owner 'splunk'
-            group 'splunk'
+            owner node[:chef_splunk][:splunk_user]
+            group node[:chef_splunk][:splunk_user]
             mode '0644'
             variables({
               :splunk_app => splunk_app,
@@ -62,8 +62,8 @@ node[:chef_splunk][:apps].each_key do |splunk_app|
     # Expecting template in implementation cookbook templates/<app_name>/<filename>.erb
     if node[:chef_splunk][:apps][splunk_app][:bin]
       directory "#{node[:chef_splunk][:home]}/#{splunk_conf_base}/#{splunk_app}/bin" do
-        owner 'splunk'
-        group 'splunk'
+        owner node[:chef_splunk][:splunk_user]
+        group node[:chef_splunk][:splunk_user]
         mode '0755'
         action :create
         notifies :restart, "service[#{splunk_service}]", :delayed
@@ -73,8 +73,8 @@ node[:chef_splunk][:apps].each_key do |splunk_app|
         template "#{node[:chef_splunk][:home]}/#{splunk_conf_base}/#{splunk_app}/bin/#{bin_file}" do
           source "#{splunk_app}/#{bin_file}.erb"
           cookbook "#{node[:chef_splunk][:implementation_cookbook]}"
-          owner 'splunk'
-          group 'splunk'
+          owner node[:chef_splunk][:splunk_user]
+          group node[:chef_splunk][:splunk_user]
           mode '0744'
         end
       end
@@ -84,8 +84,8 @@ node[:chef_splunk][:apps].each_key do |splunk_app|
     # Expecting template in implementation cookbook templates/<app_name>/<filename>.erb
     if node[:chef_splunk][:apps][splunk_app][:lookups]
       directory "#{node[:chef_splunk][:home]}/#{splunk_conf_base}/#{splunk_app}/lookups" do
-        owner 'splunk'
-        group 'splunk'
+        owner node[:chef_splunk][:splunk_user]
+        group node[:chef_splunk][:splunk_user]
         mode '0755'
         action :create
         notifies :restart, "service[#{splunk_service}]", :delayed
@@ -95,8 +95,8 @@ node[:chef_splunk][:apps].each_key do |splunk_app|
         template "#{node[:chef_splunk][:home]}/#{splunk_conf_base}/#{splunk_app}/lookups/#{lookups_file}" do
           source "#{splunk_app}/#{lookups_file}.erb"
           cookbook "#{node[:chef_splunk][:implementation_cookbook]}"
-          owner 'splunk'
-          group 'splunk'
+          owner node[:chef_splunk][:splunk_user]
+          group node[:chef_splunk][:splunk_user]
           mode '0644'
           not_if do ::File.exists?("#{node[:chef_splunk][:home]}/#{splunk_conf_base}/#{splunk_app}/lookups/#{lookups_file}") end
         end

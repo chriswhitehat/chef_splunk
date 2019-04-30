@@ -16,6 +16,9 @@
 
 default[:chef_splunk][:splunk_user] = 'splunk'
 
+default[:chef_splunk][:user_seed][:username] = 'admin'
+default[:chef_splunk][:user_seed][:hash] = ''
+
 # Type can be forwarder, heavy, enterprise
 # Only forwarder implemented at this time
 default[:chef_splunk][:type] = 'forwarder'
