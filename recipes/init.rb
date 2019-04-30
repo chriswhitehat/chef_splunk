@@ -19,6 +19,7 @@ if node[:chef_splunk][:user_seed][:hash]
     owner node[:chef_splunk][:splunk_user]
     group node[:chef_splunk][:splunk_user]
     mode '0644'
+    only_if do ::File.exists?("#{node[:chef_splunk][:home]}/ftr") end
   end
 end
 
@@ -26,6 +27,11 @@ execute 'start_splunk_on_boot' do
   command "#{node[:chef_splunk][:home]}/bin/splunk enable boot-start -user #{node[:chef_splunk][:splunk_user]} #{accept_license}; systemctl daemon-reload"
   only_if do ::File.exists?("#{node[:chef_splunk][:home]}/ftr") end
   notifies :start, "service[#{splunk_service}]"
+end
+
+file "#{node[:chef_splunk][:home]}/etc/system/local/user-seed.conf" do
+  action :delete
+  not_if do ::File.exists?("#{node[:chef_splunk][:home]}/ftr") end
 end
 
 service splunk_service do
