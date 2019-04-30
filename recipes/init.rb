@@ -4,11 +4,7 @@
 #
 # Copyright:: 2018, The Authors, All Rights Reserved.
 
-if ::File.exist?('/etc/systemd/system/SplunkForwarder.service')
-  splunk_service = 'SplunkForwarder'
-else
-  splunk_service = 'splunk'
-end
+splunk_service = 'SplunkForwarder'
 
 
 if node[:chef_splunk][:accept_license]
