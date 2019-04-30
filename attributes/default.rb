@@ -19,8 +19,8 @@ default[:chef_splunk][:splunk_user] = 'splunk'
 # Type can be forwarder, heavy, enterprise
 # Only forwarder implemented at this time
 default[:chef_splunk][:type] = 'forwarder'
-default[:chef_splunk][:version] = '6.6.2'
-default[:chef_splunk][:build] = '4b804538c686'
+default[:chef_splunk][:version] = '7.2.4'
+default[:chef_splunk][:build] = '8a94541dcfac'
 
 # Forwarder Default '/opt/splunkforwarder'
 # Enterprise Default '/opt/splunk'
