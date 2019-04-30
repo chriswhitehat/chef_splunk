@@ -54,6 +54,7 @@ end
 execute 'remove_old_installed_files' do
   command "rm #{node[:chef_splunk][:home]}/*.installed"
   action :nothing
+  only_if do ::File.exists?("#{node[:chef_splunk][:home]}/*.installed") end
 end
 
 file 'version_installed' do
