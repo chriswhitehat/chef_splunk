@@ -32,6 +32,7 @@ end
 file "#{node[:chef_splunk][:home]}/etc/system/local/user-seed.conf" do
   action :delete
   not_if do ::File.exists?("#{node[:chef_splunk][:home]}/ftr") end
+  sensitive  true
 end
 
 service splunk_service do
