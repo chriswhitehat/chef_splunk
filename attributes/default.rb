@@ -22,8 +22,8 @@ default[:chef_splunk][:user_seed][:hash] = ''
 # Type can be forwarder, heavy, enterprise
 # Only forwarder implemented at this time
 default[:chef_splunk][:type] = 'forwarder'
-default[:chef_splunk][:version] = '7.2.4'
-default[:chef_splunk][:build] = '8a94541dcfac'
+default[:chef_splunk][:version] = '8.0.1'
+default[:chef_splunk][:build] = '6db836e2fb9e'
 
 # Forwarder Default '/opt/splunkforwarder'
 # Enterprise Default '/opt/splunk'
