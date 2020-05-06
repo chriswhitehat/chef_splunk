@@ -26,7 +26,7 @@ end
 execute 'start_splunk_on_boot' do
   command "#{node[:chef_splunk][:home]}/bin/splunk enable boot-start -user #{node[:chef_splunk][:splunk_user]} #{accept_license}; systemctl daemon-reload"
   only_if do ::File.exists?("#{node[:chef_splunk][:home]}/ftr") end
-  notifies :start, "execute[service_splunk_start]", :immediately
+  notifies :run, "execute[service_splunk_start]", :immediately
 end
 
 file "#{node[:chef_splunk][:home]}/etc/system/local/user-seed.conf" do
