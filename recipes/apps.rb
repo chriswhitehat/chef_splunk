@@ -40,19 +40,40 @@ node[:chef_splunk][:apps].each_key do |splunk_app|
 
         node[:chef_splunk][:apps][splunk_app][:conf][dir].each_key do |conf|
         
-          template "#{node[:chef_splunk][:home]}/#{splunk_conf_base}/#{splunk_app}/#{dir}/#{conf}" do
-            source 'confs.erb'
-            owner node[:chef_splunk][:splunk_user]
-            group node[:chef_splunk][:splunk_user]
-            mode '0644'
-            variables({
-              :splunk_app => splunk_app,
-              :splunk_conf_base => splunk_conf_base,
-              :dir => dir,
-              :conf => conf,
-              :stanzas => node[:chef_splunk][:apps][splunk_app][:conf][dir][conf]
-            })
-            notifies :restart, "service[#{splunk_service}]", :delayed
+          if node[:chef_splunk][:confseed][splunk_app][:conf][dir][conf]
+
+            template "#{node[:chef_splunk][:home]}/#{splunk_conf_base}/#{splunk_app}/#{dir}/#{conf}" do
+              source 'confs.erb'
+              owner node[:chef_splunk][:splunk_user]
+              group node[:chef_splunk][:splunk_user]
+              mode '0644'
+              variables({
+                :splunk_app => splunk_app,
+                :splunk_conf_base => splunk_conf_base,
+                :dir => dir,
+                :conf => conf,
+                :stanzas => node[:chef_splunk][:apps][splunk_app][:conf][dir][conf]
+              })
+              notifies :restart, "service[#{splunk_service}]", :delayed
+              not_if do ::File.exists?("#{node[:chef_splunk][:home]}/#{splunk_conf_base}/#{splunk_app}/#{dir}/#{conf}") end
+            end
+
+          else
+
+            template "#{node[:chef_splunk][:home]}/#{splunk_conf_base}/#{splunk_app}/#{dir}/#{conf}" do
+              source 'confs.erb'
+              owner node[:chef_splunk][:splunk_user]
+              group node[:chef_splunk][:splunk_user]
+              mode '0644'
+              variables({
+                :splunk_app => splunk_app,
+                :splunk_conf_base => splunk_conf_base,
+                :dir => dir,
+                :conf => conf,
+                :stanzas => node[:chef_splunk][:apps][splunk_app][:conf][dir][conf]
+              })
+              notifies :restart, "service[#{splunk_service}]", :delayed
+            end
           end
         end
       end
