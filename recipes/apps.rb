@@ -40,7 +40,11 @@ node[:chef_splunk][:apps].each_key do |splunk_app|
 
         node[:chef_splunk][:apps][splunk_app][:conf][dir].each_key do |conf|
         
-          if node[:chef_splunk][:confseed][splunk_app][:conf][dir][conf]
+          if node[:chef_splunk][:confseed] && 
+            node[:chef_splunk][:confseed][splunk_app] && 
+            node[:chef_splunk][:confseed][splunk_app][:conf] && 
+            node[:chef_splunk][:confseed][splunk_app][:conf][dir] && 
+            node[:chef_splunk][:confseed][splunk_app][:conf][dir][conf]
 
             template "#{node[:chef_splunk][:home]}/#{splunk_conf_base}/#{splunk_app}/#{dir}/#{conf}" do
               source 'confs.erb'
