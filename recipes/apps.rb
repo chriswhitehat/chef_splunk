@@ -5,16 +5,16 @@
 # Copyright (c) 2017 Chris White, MIT License
 #
 
-if ::File.exist?('/etc/systemd/system/SplunkForwarder.service')
-  file '/etc/init.d/splunk' do
-    action :delete
-  end
+# if ::File.exist?('/etc/systemd/system/SplunkForwarder.service')
+#   file '/etc/init.d/splunk' do
+#     action :delete
+#   end
 
-  splunk_service = 'SplunkForwarder'
+splunk_service = 'SplunkForwarder'
 
-else
-  splunk_service = 'splunk'
-end
+# else
+#   splunk_service = 'splunk'
+# end
 
 node[:chef_splunk][:apps].each_key do |splunk_app|
 
