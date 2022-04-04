@@ -9,7 +9,16 @@ include_recipe 'chef_splunk::apps'
 include_recipe 'chef_splunk::init'
 
 
-splunk_service = 'SplunkForwarder'
+if ::File.exist?('/etc/systemd/system/SplunkForwarder.service')
+  file '/etc/init.d/splunk' do
+    action :delete
+  end
+
+  splunk_service = 'SplunkForwarder'
+
+else
+  splunk_service = 'splunk'
+end
 
 service splunk_service do
   action :start

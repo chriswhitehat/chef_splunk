@@ -8,9 +8,14 @@ if ::File.exist?('/etc/systemd/system/SplunkForwarder.service')
   file '/etc/init.d/splunk' do
     action :delete
   end
+
+  splunk_service = 'SplunkForwarder'
+
+else
+  splunk_service = 'splunk'
 end
 
-splunk_service = 'SplunkForwarder'
+
 
 if node[:chef_splunk][:type] == 'forwarder'
   package_filename = "splunkforwarder-#{node[:chef_splunk][:version]}-#{node[:chef_splunk][:build]}-linux-2.6-amd64.deb"

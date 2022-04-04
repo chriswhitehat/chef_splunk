@@ -24,7 +24,7 @@ if node[:chef_splunk][:user_seed][:hash]
 end
 
 execute 'start_splunk_on_boot' do
-  command "#{node[:chef_splunk][:home]}/bin/splunk enable boot-start -user #{node[:chef_splunk][:splunk_user]} #{accept_license}; systemctl daemon-reload"
+  command "#{node[:chef_splunk][:home]}/bin/splunk enable boot-start -systemd-managed 1 -user #{node[:chef_splunk][:splunk_user]} #{accept_license}; systemctl daemon-reload"
   only_if do ::File.exists?("#{node[:chef_splunk][:home]}/ftr") end
   notifies :run, "execute[service_splunk_start]", :immediately
 end
