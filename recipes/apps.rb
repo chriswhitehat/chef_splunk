@@ -44,6 +44,7 @@ node[:chef_splunk][:apps].each_key do |splunk_app|
         group 'root'
         mode '0640'
         notifies :run, 'execute[setacl_dirs]', :immediately
+        notifies :restart, "service[#{splunk_service}]", :delayed
       end
 
       execute 'setacl_dirs' do
@@ -60,6 +61,7 @@ node[:chef_splunk][:apps].each_key do |splunk_app|
         group 'root'
         mode '0640'
         notifies :run, 'execute[setacl_files]', :immediately
+        notifies :restart, "service[#{splunk_service}]", :delayed
       end
       
       execute 'setacl_files' do
