@@ -12,7 +12,7 @@ end
   
 splunk_service = 'SplunkForwarder'
 
-
+package 'acl'
 
 if node[:chef_splunk][:type] == 'forwarder'
   package_filename = "splunkforwarder-#{node[:chef_splunk][:version]}-#{node[:chef_splunk][:build]}-linux-2.6-amd64.deb"
