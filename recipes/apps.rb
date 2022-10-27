@@ -36,10 +36,10 @@ node[:chef_splunk][:apps].each_key do |splunk_app|
     end
 
 
-    if node[:chef_splunk][:apps][app_name][:setacl_dirs]
+    if node[:chef_splunk][:apps][splunk_app][:setacl_dirs]
       file "#{node[:chef_splunk][:home]}/#{splunk_conf_base}/#{splunk_app}/.setacl_dirs" do
         action :create
-        content node[:chef_splunk][:apps][app_name][:setacl_dirs].join(",")
+        content node[:chef_splunk][:apps][splunk_app][:setacl_dirs].join(",")
         owner 'root'
         group 'root'
         mode '0640'
@@ -47,15 +47,15 @@ node[:chef_splunk][:apps].each_key do |splunk_app|
       end
 
       execute 'setacl_dirs' do
-        command "setfacl -m u:#{node[:chef_splunk][:splunk_user]}:rx #{node[:chef_splunk][:apps][app_name][:setacl_dirs].join(" ")}"
+        command "setfacl -m u:#{node[:chef_splunk][:splunk_user]}:rx #{node[:chef_splunk][:apps][splunk_app][:setacl_dirs].join(" ")}"
         action :nothing
       end
     end
 
-    if node[:chef_splunk][:apps][app_name][:setacl_files]
+    if node[:chef_splunk][:apps][splunk_app][:setacl_files]
       file "#{node[:chef_splunk][:home]}/#{splunk_conf_base}/#{splunk_app}/.setacl_files" do
         action :create
-        content node[:chef_splunk][:apps][app_name][:setacl_files].join(",")
+        content node[:chef_splunk][:apps][splunk_app][:setacl_files].join(",")
         owner 'root'
         group 'root'
         mode '0640'
@@ -63,7 +63,7 @@ node[:chef_splunk][:apps].each_key do |splunk_app|
       end
       
       execute 'setacl_files' do
-        command "setfacl -m u:#{node[:chef_splunk][:splunk_user]}:r #{node[:chef_splunk][:apps][app_name][:setacl_files].join(" ")}"
+        command "setfacl -m u:#{node[:chef_splunk][:splunk_user]}:r #{node[:chef_splunk][:apps][splunk_app][:setacl_files].join(" ")}"
         action :nothing
       end
     end
